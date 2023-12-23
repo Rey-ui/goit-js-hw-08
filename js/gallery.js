@@ -66,7 +66,7 @@ const images = [
 const galleryEl = document.querySelector(".gallery");
 const elemsLi = images.map(image => {
     return `<li class="gallery-item">
-  <a class="gallery-link" href="large-image.jpg">
+  <a class="gallery-link" href="${image.original}">
     <img
       class="gallery-image"
       src="${image.preview}"
@@ -76,14 +76,20 @@ const elemsLi = images.map(image => {
   </a>
   </li>`
 }).join('');
+function removePress(event, instance) {
+    if (event.code === 'Escape') {
+        instance.close();
+        window.removeEventListener('keydown', removePress);
+    }
+}
 galleryEl.insertAdjacentHTML("beforeend", elemsLi);
 galleryEl.addEventListener('click', (event) => {
     event.preventDefault();
-    const galleryImage = event.target.closest('.gallery-image');
+    const galleryImage = event.target.classList.contains('gallery-image');
     if (!galleryImage) {
         return;
     }
-    const largeImageSource = galleryImage.dataset.source;
+    const largeImageSource = event.target.dataset.source;
     const imageOriginal = images.find(({ original }) => original === largeImageSource);
     const instance = basicLightbox.create(`
   <div class="modal">
@@ -92,9 +98,5 @@ galleryEl.addEventListener('click', (event) => {
 `);
 
     instance.show();
-    window.addEventListener('keydown', (event) => {
-        if (event.code === 'Escape') {
-            instance.close();
-        }
-    });
+    window.addEventListener('keydown', (event) => removePress(event, instance));
 });
