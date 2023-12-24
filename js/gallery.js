@@ -76,10 +76,9 @@ const elemsLi = images.map(image => {
   </a>
   </li>`
 }).join('');
-function removePress(event, instance) {
+function handleEscapeKeyPress(event, instance) {
     if (event.code === 'Escape') {
         instance.close();
-        window.removeEventListener('keydown', removePress);
     }
 }
 galleryEl.insertAdjacentHTML("beforeend", elemsLi);
@@ -94,9 +93,13 @@ galleryEl.addEventListener('click', (event) => {
     const instance = basicLightbox.create(`
   <div class="modal">
     <img  src="${imageOriginal.original}" alt="${imageOriginal.description}">
-  </div>
-`);
-
+  </div>`, {
+        onShow: (instance) => {
+            window.addEventListener('keydown', (event) => handleEscapeKeyPress(event, instance));
+        },
+        onClose: (instance) => {
+            window.removeEventListener('keydown', handleEscapeKeyPress(event, instance));
+        }
+    });
     instance.show();
-    window.addEventListener('keydown', (event) => removePress(event, instance));
 });
