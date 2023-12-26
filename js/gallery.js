@@ -71,7 +71,7 @@ const elemsLi = images.map(image => {
       class="gallery-image"
       src="${image.preview}"
       data-source="${image.original}"
-      alt="${image.original}"
+      alt="${image.description}"
     />
   </a>
   </li>`
@@ -97,8 +97,8 @@ galleryEl.addEventListener('click', (event) => {
         onShow: (instance) => {
             window.addEventListener('keydown', (event) => handleEscapeKeyPress(event, instance));
         },
-        onClose: (instance) => {
-            window.removeEventListener('keydown', handleEscapeKeyPress(event, instance));
+        onClose: () => {
+            window.removeEventListener('keydown', handleEscapeKeyPress);
         }
     });
     instance.show();
