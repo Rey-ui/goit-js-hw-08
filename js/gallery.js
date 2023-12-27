@@ -97,7 +97,7 @@ galleryEl.addEventListener('click', (event) => {
         onShow: (instance) => {
             window.addEventListener('keydown', (event) => handleEscapeKeyPress(event, instance));
         },
-        onClose: () => {
+        onClose: (instance) => {
             window.removeEventListener('keydown', handleEscapeKeyPress);
         }
     });
