@@ -89,16 +89,16 @@ galleryEl.addEventListener('click', (event) => {
         return;
     }
     const largeImageSource = event.target.dataset.source;
-    const imageOriginal = images.find(({ original }) => original === largeImageSource);
+    const largeImageDescript = event.target.alt;
     const instance = basicLightbox.create(`
   <div class="modal">
-    <img  src="${imageOriginal.original}" alt="${imageOriginal.description}">
+    <img  src="${largeImageSource}" alt="${largeImageDescript}">
   </div>`, {
         onShow: (instance) => {
             window.addEventListener('keydown', (event) => handleEscapeKeyPress(event, instance));
         },
         onClose: (instance) => {
-            window.removeEventListener('keydown', handleEscapeKeyPress);
+            window.removeEventListener('keydown', (event) => handleEscapeKeyPress(event, instance));
         }
     });
     instance.show();
